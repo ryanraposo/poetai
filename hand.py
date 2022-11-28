@@ -43,7 +43,7 @@ class Hand(object):
         )
         self.nn.restore()
 
-    def write(self, filename, lines, biases=None, styles=None, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60, output_png=False):
+    def write(self, filename, lines, biases=None, styles=None, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60, background_color=None, output_png=False):
         valid_char_set = set(drawing.alphabet)
         for line_num, line in enumerate(lines):
             if len(line) > 75:
@@ -65,7 +65,7 @@ class Hand(object):
 
         strokes = self._sample(lines, biases=biases, styles=styles)
         self._draw(strokes, lines, filename,
-                   stroke_colors=stroke_colors, stroke_widths=stroke_widths, center_align=center_align, line_height=line_height, output_png=output_png)
+                   stroke_colors=stroke_colors, stroke_widths=stroke_widths, center_align=center_align, line_height=line_height, background_color=background_color, output_png=output_png)
 
     def _sample(self, lines, biases=None, styles=None):
         num_samples = len(lines)
@@ -115,7 +115,7 @@ class Hand(object):
                    for sample in samples]
         return samples
 
-    def _draw(self, strokes, lines, filename, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60, output_png=False):
+    def _draw(self, strokes, lines, filename, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60, background_color=None, output_png=False):
         stroke_colors = stroke_colors or ['black']*len(lines)
         stroke_widths = stroke_widths or [2]*len(lines)
 
@@ -124,8 +124,12 @@ class Hand(object):
 
         dwg = svgwrite.Drawing(filename=filename)
         dwg.viewbox(width=view_width, height=view_height)
-        dwg.add(dwg.rect(insert=(0, 0), size=(
-            view_width, view_height), fill='white'))
+
+        if background_color:
+            dwg.add(dwg.rect(insert=(0, 0), size=(
+                view_width, view_height), fill=background_color))
+        else:
+            print("No background color.")
 
         initial_coord = np.array([0, -(3*line_height / 4)])
         for offsets, line, color, width in zip(strokes, lines, stroke_colors, stroke_widths):
@@ -160,6 +164,14 @@ class Hand(object):
         dwg.save()
 
         if output_png:
-            cairosvg.svg2png(
+            if not background_color:
+                cairosvg.svg2png(
+                    url="./" + dwg.filename,
+                    write_to="./" + dwg.filename.replace("svg", "png"),
+                    background_color='transparent'
+                    )
+            else:
+                cairosvg.svg2png(
                 url="./" + dwg.filename,
-                write_to="./" + dwg.filename.replace("svg", "png"))
+                write_to="./" + dwg.filename.replace("svg", "png"),
+                )
