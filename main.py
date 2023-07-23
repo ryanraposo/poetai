@@ -1,20 +1,23 @@
 import os
 from hand import Hand
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
-if __name__ == '__maxxxxxxxin__':
+@app.route("/")
+def hello_world():
+    args = request.args
+
+    text = args.get("text", default="Hello World!!!", type=str)
+    style = args.get("style", default="1", type=str)
 
     hand = Hand()
 
     lines = [
         "Writer has written",
         "One writes in kind",
-        "You see the hand",
         "You see the mind",
         "Source begets source",
-        "Begets source",
         "Begets source"
     ]
     
@@ -35,9 +38,7 @@ if __name__ == '__maxxxxxxxin__':
         output_png=True
     )
 
-@app.route("/")
-def hello_world():
-    return "Hello World!"
+    return text
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
