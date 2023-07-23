@@ -6,10 +6,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    args = request.args
 
-    text = args.get("text", default="Hello World!!!", type=str)
-    style = args.get("style", default="1", type=str)
+    text1 = request.args.get('text1')
 
     hand = Hand()
 
@@ -38,7 +36,7 @@ def hello_world():
         output_png=False
     )
 
-    return "ver11 " + text + " - " + svgText
+    return "ver11 " + text1 + " - " + svgText
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
