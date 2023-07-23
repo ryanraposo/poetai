@@ -20,6 +20,8 @@ def hello_world():
         "Source begets source",
         "Begets source"
     ]
+
+    lines = text1.split('|')
     
     biases = [.75 for i in lines]
     styles = [5 for i in lines]
@@ -40,7 +42,7 @@ def hello_world():
         output_png=False
     )
 
-    return "ver11 " + text1 + " - " + svgText
+    return "ver12 " + text1 + " - " + svgText
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
