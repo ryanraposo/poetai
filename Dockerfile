@@ -13,7 +13,7 @@ RUN pip install scikit-learn
 RUN pip install awscli
 RUN pip install cairosvg==1.0.22
 RUN pip install Flask
-RUN pip install gunicorn
+RUN pip install gunicorn==19.10.0
 
 ENV PYTHONUNBUFFERED True
 ENV APP_HOME /app
