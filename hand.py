@@ -41,7 +41,7 @@ class Hand(object):
         )
         self.nn.restore()
 
-    def write(self, lines, biases=None, styles=None, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60, output_png=False):
+    def write(self, lines, biases=None, styles=None, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60):
         valid_char_set = set(drawing.alphabet)
         for line_num, line in enumerate(lines):
             if len(line) > 75:
@@ -63,7 +63,7 @@ class Hand(object):
 
         strokes = self._sample(lines, biases=biases, styles=styles)
         result = self._draw(strokes, lines,
-                   stroke_colors=stroke_colors, stroke_widths=stroke_widths, center_align=center_align, line_height=line_height, output_png=output_png)
+                   stroke_colors=stroke_colors, stroke_widths=stroke_widths, center_align=center_align, line_height=line_height)
         return result
 
     def _sample(self, lines, biases=None, styles=None):
@@ -114,7 +114,7 @@ class Hand(object):
                    for sample in samples]
         return samples
 
-    def _draw(self, strokes, lines, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60, output_png=False):
+    def _draw(self, strokes, lines, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60):
         stroke_colors = stroke_colors or ['black']*len(lines)
         stroke_widths = stroke_widths or [2]*len(lines)
 
