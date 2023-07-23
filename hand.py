@@ -7,11 +7,9 @@ import warnings
 
 import numpy as np
 import svgwrite
-import cairosvg
 
 import drawing
 from rnn import rnn
-
 
 class Hand(object):
 
@@ -159,10 +157,5 @@ class Hand(object):
             initial_coord[1] -= line_height
 
         result = dwg.tostring()
-
-        if output_png:
-            cairosvg.svg2png(
-                url="./" + dwg.filename,
-                write_to="./" + dwg.filename.replace("svg", "png"))
 
         return result

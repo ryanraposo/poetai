@@ -1,6 +1,8 @@
 import os
 from hand import Hand
 from flask import Flask, request
+import random
+import string
 
 app = Flask(__name__)
 
@@ -23,9 +25,11 @@ def hello_world():
     styles = [5 for i in lines]
     stroke_colors = ['black' for i in lines]
     stroke_widths = [1 for i in lines]
-    
+
+    tmpFilename = ''.join(random.choice(string.ascii_lowercase) for i in range(40))
+
     svgText = hand.write(
-        filename='img/source.svg',
+        filename='img/'+tmpFilename+'.svg',
         lines=lines,
         biases=biases,
         styles=styles,
