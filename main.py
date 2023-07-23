@@ -10,21 +10,15 @@ app = Flask(__name__)
 def hello_world():
 
     text1 = request.args.get('text1')
+    style1 = request.args.get('style1')
+    bias1 = request.args.get('bias1')
 
     hand = Hand()
-
-    lines = [
-        "Writer has written",
-        "One writes in kind",
-        "You see the mind",
-        "Source begets source",
-        "Begets source"
-    ]
 
     lines = text1.split('|')
     
     biases = [.75 for i in lines]
-    styles = [5 for i in lines]
+    styles = [int(style1) for i in lines]
     stroke_colors = ['black' for i in lines]
     stroke_widths = [1 for i in lines]
 
@@ -42,7 +36,9 @@ def hello_world():
         output_png=False
     )
 
-    return "ver12 " + text1 + " - " + svgText
+    del hand
+
+    return "ver13 " + svgText
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

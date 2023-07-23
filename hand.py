@@ -121,7 +121,7 @@ class Hand(object):
         view_width = 1000
         view_height = line_height*(len(strokes) + 1)
 
-        dwg = svgwrite.Drawing(filename=filename)
+        dwg = svgwrite.Drawing()
         dwg.viewbox(width=view_width, height=view_height)
         dwg.add(dwg.rect(insert=(0, 0), size=(
             view_width, view_height), fill='white'))
