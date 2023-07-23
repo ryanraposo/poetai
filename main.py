@@ -26,7 +26,7 @@ def hello_world():
     stroke_colors = ['black' for i in lines]
     stroke_widths = [1 for i in lines]
     
-    hand.write(
+    svgText = hand.write(
         filename='img/source.svg',
         lines=lines,
         biases=biases,
@@ -35,10 +35,10 @@ def hello_world():
         stroke_widths=stroke_widths,
         center_align=False,
         line_height=50,
-        output_png=True
+        output_png=False
     )
 
-    return text
+    return "ver11 " + text + " - " + svgText
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

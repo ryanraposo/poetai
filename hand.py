@@ -64,8 +64,9 @@ class Hand(object):
                     )
 
         strokes = self._sample(lines, biases=biases, styles=styles)
-        self._draw(strokes, lines, filename,
+        result = self._draw(strokes, lines, filename,
                    stroke_colors=stroke_colors, stroke_widths=stroke_widths, center_align=center_align, line_height=line_height, output_png=output_png)
+        return result
 
     def _sample(self, lines, biases=None, styles=None):
         num_samples = len(lines)
@@ -157,9 +158,11 @@ class Hand(object):
 
             initial_coord[1] -= line_height
 
-        dwg.save()
+        result = dwg.tostring()
 
         if output_png:
             cairosvg.svg2png(
                 url="./" + dwg.filename,
                 write_to="./" + dwg.filename.replace("svg", "png"))
+
+        return result
