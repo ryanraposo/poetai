@@ -1,7 +1,10 @@
+import os
 from hand import Hand
+from flask import Flask
 
+app = Flask(__name__)
 
-if __name__ == '__main__':
+if __name__ == '__maxxxxxxxin__':
 
     hand = Hand()
 
@@ -31,3 +34,12 @@ if __name__ == '__main__':
         line_height=50,
         output_png=True
     )
+
+@app.route("/")
+def hello_world():
+    """Example Hello World route."""
+    name = os.environ.get("NAME", "World")
+    return f"Hello {name}!"
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
