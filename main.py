@@ -10,7 +10,7 @@ def hello_world():
     text1 = request.args.get('text1')
     style1 = request.args.get('style1')
     bias1 = request.args.get('bias1')
-    biasFloat = int(bias1) / 100 
+    biasFloat = float(int(bias1)) / float(100) 
     styleInt = int(style1) 
     hand = Hand()
 
