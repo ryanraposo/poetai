@@ -7,11 +7,9 @@ import warnings
 
 import numpy as np
 import svgwrite
-import cairosvg
 
 import drawing
 from rnn import rnn
-
 
 class Hand(object):
 
@@ -43,7 +41,7 @@ class Hand(object):
         )
         self.nn.restore()
 
-    def write(self, filename, lines, biases=None, styles=None, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60, output_png=False):
+    def write(self, lines, biases=None, styles=None, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60):
         valid_char_set = set(drawing.alphabet)
         for line_num, line in enumerate(lines):
             if len(line) > 75:
@@ -64,8 +62,9 @@ class Hand(object):
                     )
 
         strokes = self._sample(lines, biases=biases, styles=styles)
-        self._draw(strokes, lines, filename,
-                   stroke_colors=stroke_colors, stroke_widths=stroke_widths, center_align=center_align, line_height=line_height, output_png=output_png)
+        result = self._draw(strokes, lines,
+                   stroke_colors=stroke_colors, stroke_widths=stroke_widths, center_align=center_align, line_height=line_height)
+        return result
 
     def _sample(self, lines, biases=None, styles=None):
         num_samples = len(lines)
@@ -115,14 +114,14 @@ class Hand(object):
                    for sample in samples]
         return samples
 
-    def _draw(self, strokes, lines, filename, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60, output_png=False):
+    def _draw(self, strokes, lines, stroke_colors=None, stroke_widths=None, center_align=False, line_height=60):
         stroke_colors = stroke_colors or ['black']*len(lines)
         stroke_widths = stroke_widths or [2]*len(lines)
 
         view_width = 1000
         view_height = line_height*(len(strokes) + 1)
 
-        dwg = svgwrite.Drawing(filename=filename)
+        dwg = svgwrite.Drawing()
         dwg.viewbox(width=view_width, height=view_height)
         dwg.add(dwg.rect(insert=(0, 0), size=(
             view_width, view_height), fill='white'))
@@ -157,9 +156,6 @@ class Hand(object):
 
             initial_coord[1] -= line_height
 
-        dwg.save()
+        result = dwg.tostring()
 
-        if output_png:
-            cairosvg.svg2png(
-                url="./" + dwg.filename,
-                write_to="./" + dwg.filename.replace("svg", "png"))
+        return result
